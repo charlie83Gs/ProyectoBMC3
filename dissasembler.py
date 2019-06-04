@@ -3,7 +3,7 @@
 #will take completion over overlapping
 class Dissasembler(object):
     
-    def __init__(self,pSustitution,pInsertion,pDeletion,pChimeras,pInversion,pMinOverlap,pMaxOverlap):
+    def __init__(self,pSustitution,pInsertion,pDeletion,pChimeras,pInversion,pMinOverlap,pMaxOverlap,pFragments):
         self.sustitution = pSustitution
         self.insertion = pInsertion
         self.deletion = pDeletion
@@ -14,6 +14,7 @@ class Dissasembler(object):
         self.domain = []
         self.data = ""
         self.visited = []
+        self.fragments = pFragments
 
     def generateFragment():
         size = len(self.data)

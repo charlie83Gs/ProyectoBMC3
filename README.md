@@ -1,1 +1,1 @@
-<h1>Proyecto 3 Bioligia Molecular<h1>
+<h1>Proyecto 3 Biologia Molecular<h1>
