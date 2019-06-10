@@ -3,6 +3,12 @@ import random
 from math import sqrt
 from math import floor
 
+
+'''
+TODO
+-add multi string support for chimeras, and configuration variable
+-add distance confifuration for all other errors
+'''
 #agregar distribucion uniforme da puntos extra1!
 
 #will take completion over overlapping
@@ -16,7 +22,6 @@ class Dissasembler(object):
         self.inversion = pInversion
         self.minOverlap = pMinOverlap
         self.maxOverlap = pMaxOverlap
-        self.domain = []
         self.data = ""
         self.visited = []
         self.fragments = pFragments
@@ -25,6 +30,34 @@ class Dissasembler(object):
         self.fragmentCoverage = 0
         self.domain = ["A","C","T","G"]
         #random.seed (28)
+
+    #generates and saver fragments with name
+    def saveFragments(self,name):
+
+        fragments = self.generateFragments()
+        fragmentFile= open(name+".frag","w+")
+        confFile= open(name+".conf","w+")
+
+        #store on file
+        for fragment in fragments:
+            fragmentFile.write(fragment + chr(0))
+
+        fragmentFile.close()
+
+        #write all config parameters of generated fragments
+        confFile.write("Metadata-------------------------------\n")
+        confFile.write("Target coverage: "+ str(self.setFragmentCoverage)+"\n")
+        confFile.write("Target fragment amount: "+ str(self.framgents) +"\n")
+        confFile.write("Generated fragment amount: "+ str(len(framgents)) +"\n")
+        confFile.write("Minimun overlap: "+ str(self.minOverlap) +"\n")
+        confFile.write("Minimun overlap: "+ str(self.maxOverlap) +"\n")
+        confFile.write("Error Rates------------------------------- \n ")
+        confFile.write("Sustitution: "+ str(self.sustitution) + "\n")
+        confFile.write("Insertion: "+ str(self.insertion) + "\n")
+        confFile.write("Chimeras: "+ str(self.chimeras) + "\n")
+        confFile.write("Inversion: "+ str(self.inversion) + "\n")
+        confFile.close()
+
 
     def generateFragments(self):
         size = len(self.data)
