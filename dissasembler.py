@@ -114,7 +114,14 @@ class Dissasembler(object):
             del newFragments[toRemove]
             removed -= 1
 
+        '''
+        prev = newFragments[0]
+        for f in newFragments:
+            print(overlapMax(prev,f))
+            prev = f
+        '''
         return newFragments
+        
 
     #generates an amount of random fragments
     def generetaFreeFragment(self,totalFragments):
@@ -203,3 +210,8 @@ def remove_char(s,p):
 
 def reverse_string(s):
     return s[::-1]
+
+
+def overlapMax(a, b):
+    values = (i for i in range(len(b)) if b[i-1] == a[-1] and a.endswith(b[:i]))
+    return max(values,default = 0)

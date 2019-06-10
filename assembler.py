@@ -1,5 +1,11 @@
 import difflib
 
+
+'''
+TODO 
+-check overlap function overlap numbers should be corresponding to min and max overlap
+'''
+
 class Assembler(object):
     
     def __init__(self):
@@ -14,13 +20,15 @@ class Assembler(object):
     	#generate overlap graph
     	graph.bruteForceConnect(2)
     	print("connected")
-    	graph.eliminateWeakPaths()
-    	print("simplified")
-    	res = graph.getGreedyOverlap()
+    	#graph.eliminateWeakPathsOptimized()
+    	#print("simplified")
+    	#res = graph.getGreedyOverlap()
+    	res = graph.getGreedyIntuitiveOverlap();
     	print(len(res))
-    	print(res)
 
-    	print(nodeArrayToString(res))
+    	#print(res)
+
+    	#print(nodeArrayToString(res))
 
 
 class Graph(object):
@@ -56,19 +64,62 @@ class Graph(object):
 				if(overlap >= minOverlap):
 					self.addConection(nodeAindex,nodeBindex,overlap)
 					cont +=1
-				if(cont%10000 == 0):
-					print(cont)
+					if(cont%2000 == 0):
+						print(cont)
+				
 		print(cont)
 	
+	def getGreedyIntuitiveOverlap(self):
+		result = []
+		#use dictionary as cache
+		cache = {}
+		self.nodes.sort(key=lambda x: x.highestCost, reverse=True)
+		for nodeA in self.nodes:
+			#visit node if not visited
+			if(not nodeA.visited):
+				nodeA.visited = True
+				#create a copy of current node
+				bc = nodeA
+				#stores the full path visited by the node
+				acc = [bc]
+				while(nodeA):
+					current = nodeA
+					nodeA = None
+					for nodeB in current.neighbors:
+						if(not nodeB.visited):
+							if(nodeB in cache):
+								del cache[current]
+								acc += cache[nodeB]
+							else:
+								acc += [nodeB]
+							nodeB.visited = True
+							nodeA = nodeB
+							break
+				cache[bc] = acc
+
+		#pn = []
+		for node in self.nodes:
+			#if(node in cache):
+				#print(len(cache[node]))
+			if(node in cache and len(cache[node]) > len(result)):
+				result = cache[node]
+
+				#pn += [len(cache[node])]
+		#print(pn)
+
+		return result
+
+
 	#does gready aproach to string assembly
 	def getGreedyOverlap(self):
+		self.eliminateWeakPathsOptimized()
+		prin("simplified")
 		result = []
 		#use dictionary as cache
 		cache = {}
 		#sort connections by highest value
 		self.connections.sort(key=lambda x: x["cost"], reverse=True)
 		
-
 		for con in self.connections:
 			nodeA = con["a"]
 			nodeB = con["b"]
@@ -80,9 +131,21 @@ class Graph(object):
 			if(len(cache[nodeA]) > len(result)):
 				result = cache[nodeA]
 		
+		pn = []
+		for node in self.nodes:
+			if(node in cache):
+				pn += [len(cache[node])]
+
+		print(pn)
 
 		return result
 
+	def nonRepeatingWeakPaths(self):
+		self.reset()
+		for node in self.nodes:
+			node.eliminateWeakPathsOptimized()
+
+		self.reset()
 	def eliminateWeakPaths(self):
 		for node in self.nodes:
 			node.eliminateWeakPaths()
@@ -90,19 +153,31 @@ class Graph(object):
 			if(len(node.neighbors) > 0):
 				newConection = {"a":node,"b":node.neighbors[0],"cost":node.cost[0]}
 				self.connections += [newConection]
-				
+
+	def eliminateWeakPathsOptimized(self):
+		for node in self.nodes:
+			node.eliminateWeakPathsOptimized()
+			#add connections to list representation
+			if(len(node.neighbors) > 0):
+				newConection = {"a":node,"b":node.neighbors[0],"cost":node.cost[0]}
+				self.connections += [newConection]
+
 	def reset(self):
 		for node in self.nodes:
 			node.visited = False
+
+
 class Node(object):
 	def __init__(self,data):
 		self.neighbors = []
 		self.cost = []
 		self.data = data
 		self.visited = False
+		self.highestCost = 0
 
 	#keeps the bigges cost at index 0 
 	def addNeighbor(self,newNeightbor, newCost):
+		#print(newCost)
 		if(len(self.cost) <=0):
 			self.cost += [newCost]
 			self.neighbors += [newNeightbor]
@@ -117,6 +192,8 @@ class Node(object):
 					self.cost = self.cost[:i-1] + [ newCost] + self.cost[i-1:]
 					self.neighbors = self.neighbors[:i-1] + [ newNeightbor] + self.neighbors[i-1:]
 					break
+		#store higest cost value
+		self.highestCost = self.cost[0]
 
 
 	def removeNeighbor(self, target):
@@ -133,6 +210,21 @@ class Node(object):
 		if(len(self.cost) > 0):
 			self.cost = [self.cost[0]]
 			self.neighbors = [self.neighbors[0]]
+
+	def eliminateWeakPathsOptimized(self):
+		
+		neighbors = self.neighbors
+		cost = self.cost
+		self.cost = []
+		self.neighbors = []
+		if(len(cost) > 0):
+			for i in range(len(cost)-1):
+				currentCost = cost[i]
+				currentNb = neighbors[i]
+				if(not currentNb.visited):
+					self.cost = [currentCost]
+					self.neighbors = [currentNb]
+					currentNb.visited = True
 
 # utility function
 def get_overlap(s1, s2):
