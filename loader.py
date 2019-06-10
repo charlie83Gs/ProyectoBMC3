@@ -9,6 +9,7 @@ class fileLoader(object):
 	
 	def __init__(self, pFileName):
 		self.fileNmae = pFileName
+		self.domain = set()
 
 	def loadDNA(self):
 		#file is loaded and all characters become capitalized
@@ -43,6 +44,10 @@ class fileLoader(object):
 		processed = ""
 		for c in original:
 			if(domain[c] == True):
+				self.domain.add(c)
 				processed += c
 
 		return processed
+
+	def getDomain(self):
+		return list(self.domain)
