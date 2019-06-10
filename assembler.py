@@ -18,7 +18,7 @@ class Assembler(object):
     		graph.addNode(newNode)
 
     	#generate overlap graph
-    	graph.bruteForceConnect(2)
+    	graph.bruteForceConnect(5)
     	print("connected")
     	#graph.eliminateWeakPathsOptimized()
     	#print("simplified")
@@ -64,10 +64,10 @@ class Graph(object):
 				if(overlap >= minOverlap):
 					self.addConection(nodeAindex,nodeBindex,overlap)
 					cont +=1
-					if(cont%2000 == 0):
-						print(cont)
-				
-		print(cont)
+					if(cont%1000 == 0):
+						print("Total conections: " + str(cont) + "\r", end="")
+		print("Total conections: " + str(cont))		
+
 	
 	def getGreedyIntuitiveOverlap(self):
 		result = []

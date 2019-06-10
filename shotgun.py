@@ -16,7 +16,7 @@ dna = randomDNA(200000)
 #print(dna)
 
 
-dissasembler = Dissasembler(0,0,0,0,0,28, 70, 4000)
+dissasembler = Dissasembler(0,0,0,0,0,28, 70, 600)
 dissasembler.setData(dna)
 dissasembler.setFragmentLenght(400)
 dissasembler.setFragmentCoverage(0.98)
