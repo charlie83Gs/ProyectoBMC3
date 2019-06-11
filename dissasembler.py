@@ -33,7 +33,6 @@ class Dissasembler(object):
 
     #generates and saver fragments with name
     def saveFragments(self,name):
-
         fragments = self.generateFragments()
         fragmentFile= open(name+".frag","w+")
         confFile= open(name+".conf","w+")
@@ -47,8 +46,8 @@ class Dissasembler(object):
         #write all config parameters of generated fragments
         confFile.write("Metadata-------------------------------\n")
         confFile.write("Target coverage: "+ str(self.setFragmentCoverage)+"\n")
-        confFile.write("Target fragment amount: "+ str(self.framgents) +"\n")
-        confFile.write("Generated fragment amount: "+ str(len(framgents)) +"\n")
+        confFile.write("Target fragment amount: "+ str(self.fragments) +"\n")
+        confFile.write("Generated fragment amount: "+ str(len(fragments)) +"\n")
         confFile.write("Minimun overlap: "+ str(self.minOverlap) +"\n")
         confFile.write("Minimun overlap: "+ str(self.maxOverlap) +"\n")
         confFile.write("Error Rates------------------------------- \n ")

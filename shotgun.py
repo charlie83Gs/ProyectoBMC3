@@ -12,11 +12,11 @@ dna = loader.loadDNA()
 domain = loader.getDomain()
 print(domain)
 #randomize dna
-dna = randomDNA(200000)
+dna = randomDNA(20000)
 #print(dna)
 
 
-dissasembler = Dissasembler(0,0,0,0,0,28, 70, 4000)
+dissasembler = Dissasembler(0,0,0,0,0,28, 70, 400)
 dissasembler.setData(dna)
 dissasembler.setFragmentLenght(400)
 dissasembler.setFragmentCoverage(0.98)
@@ -35,7 +35,7 @@ print(len(fragments))
 
 assembler = Assembler()
 
-assembler.assemble(fragments)
+#assembler.assemble(fragments)
 
 
 
