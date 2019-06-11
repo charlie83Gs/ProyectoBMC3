@@ -1,3 +1,4 @@
+from shotgun import *
 from tkinter import *
 from tkinter import messagebox
 
@@ -50,8 +51,8 @@ lblFragments = Label(window, text = "Cantidad de Fragmentos:" , bg= "cadet blue"
 varFragments = StringVar()
 fragments = Entry (window, textvariable = varFragments, bg= "#eef4f9", fg="#1e395b", width = 10).place (x = 30, y = 360)
 
-generate = Button(window, width = 15, bg="Skyblue4",fg="white",text="GENERATE", font = "Helvetica 16 bold italic")
-generate.place(x = 250, y = 400)
+btnGenerate = Button(window, width = 15, bg="Skyblue4",fg="white",text="GENERATE", font = "Helvetica 16 bold italic", command = lambda : generate(int(varSustitution.get()), int(varInsertion.get()), int(varDeletion.get()), int(varChimeras.get()), int(varInversion.get()), int(varMinOverlap.get()), int(varMaxOverlap.get()), int(varFragments.get())))
+btnGenerate.place(x = 250, y = 400)
 
 adn = PhotoImage(file="adn.png")
 labelImage = Label(window, image = adn, bg = "cadet blue").place(x=550, y=300)
