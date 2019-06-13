@@ -5,9 +5,8 @@ from assembler import Assembler
 
 
 
-def generate(pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFrag):
-	loader = fileLoader("dna.txt")
-
+def generate(pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFrag, pFile):
+	loader = fileLoader(pFile)
 	dna = loader.loadDNA()
 	domain = loader.getDomain()
 	#print(domain)
