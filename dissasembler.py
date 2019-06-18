@@ -32,30 +32,33 @@ class Dissasembler(object):
         #random.seed (28)
 
     #generates and saver fragments with name
+    def saveConfiguration(self, pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFragQuantity, pFragLength, pFragCover, pFile):
+        confFile= open(pFile + ".conf","w+")
+        
+        confFile.write(str(pSus) + "\n")
+        confFile.write(str(pIns) + "\n")
+        confFile.write(str(pDel) + "\n")
+        confFile.write(str(pChi) + "\n")
+        confFile.write(str(pInv) + "\n")
+        confFile.write(str(pMinOver) + "\n")
+        confFile.write(str(pMaxOver) + "\n")
+        confFile.write(str(pFragQuantity) + "\n")
+        confFile.write(str(pFragLength) + "\n")
+        confFile.write(str(pFragCover))
+        
+        #write all config parameters of generated fragments
+        confFile
+        confFile.close()
+        
     def saveFragments(self,name):
         fragments = self.generateFragments()
-        fragmentFile= open(name+".frag","w+")
-        confFile= open(name+".conf","w+")
+        fragmentFile= open(name+".frag","w+")        
 
         #store on file
         for fragment in fragments:
-            fragmentFile.write(fragment + chr(0))
-
+            fragmentFile.write(fragment + "\n")
+            
         fragmentFile.close()
-
-        #write all config parameters of generated fragments
-        confFile.write("Metadata-------------------------------\n")
-        confFile.write("Target coverage: "+ str(self.setFragmentCoverage)+"\n")
-        confFile.write("Target fragment amount: "+ str(self.fragments) +"\n")
-        confFile.write("Generated fragment amount: "+ str(len(fragments)) +"\n")
-        confFile.write("Minimun overlap: "+ str(self.minOverlap) +"\n")
-        confFile.write("Minimun overlap: "+ str(self.maxOverlap) +"\n")
-        confFile.write("Error Rates------------------------------- \n ")
-        confFile.write("Sustitution: "+ str(self.sustitution) + "\n")
-        confFile.write("Insertion: "+ str(self.insertion) + "\n")
-        confFile.write("Chimeras: "+ str(self.chimeras) + "\n")
-        confFile.write("Inversion: "+ str(self.inversion) + "\n")
-        confFile.close()
 
 
     def generateFragments(self):

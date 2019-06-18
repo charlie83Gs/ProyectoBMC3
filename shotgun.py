@@ -5,7 +5,7 @@ from assembler import Assembler
 
 
 
-def generate(pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFrag, pFile):
+def generate(pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFragQuantity, pFragLength, pFragCover, pFile):
 	loader = fileLoader(pFile)
 	dna = loader.loadDNA()
 	domain = loader.getDomain()
@@ -14,14 +14,15 @@ def generate(pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFrag, pFile):
 	dna = randomDNA(20000)
 	#print(dna)
 
-	dissasembler = Dissasembler(pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFrag)
+	dissasembler = Dissasembler(pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFragQuantity)
 	dissasembler.setData(dna)
-	dissasembler.setFragmentLenght(400)
-	dissasembler.setFragmentCoverage(0.98)
+	dissasembler.setFragmentLenght(pFragLength)
+	dissasembler.setFragmentCoverage(pFragCover)
 	dissasembler.setDomain(domain)
 
 	#fragments = dissasembler.generateFragments()
 	dissasembler.saveFragments("test")
+	dissasembler.saveConfiguration(pSus, pIns, pDel, pChi, pInv, pMinOver, pMaxOver, pFragQuantity, pFragLength, pFragCover, "test")
 	#for f in fragments:
 	#	print(len(f))
 

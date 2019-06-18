@@ -71,11 +71,25 @@ varCoverageFragments = StringVar()
 lblCoverageFragments = Label(window, text = "Porcentaje de cobertura mínimo:" , bg= "cadet blue", fg="white", font="Arial 12 bold").place(x=380, y=460)
 coverageFragments = Entry (window, textvariable = varCoverageFragments, bg= "#eef4f9", fg="#1e395b", width = 10).place (x = 650, y = 462)
 
-btnGenerate = Button(window, width = 15, bg="Skyblue4",fg="white",text="GENERATE", font = "Helvetica 16 bold italic", command = lambda : generate(int(varSustitution.get()), int(varInsertion.get()), int(varDeletion.get()), int(varChimeras.get()), int(varInversion.get()), int(varMinOverlap.get()), int(varMaxOverlap.get()), int(varFragments.get()), dnaFile))
+btnGenerate = Button(window, width = 15, bg="Skyblue4",fg="white",text="GENERATE", font = "Helvetica 16 bold italic", command = lambda : buttonAtcion())
 btnGenerate.place(x = 250, y = 520)
 
 adn = PhotoImage(file="adn.png")
 labelImage = Label(window, image = adn, bg = "cadet blue").place(x=650, y=500)
+
+def ventanaSecundaria():
+    windowSec = Tk()
+    windowSec.title("Ensamblaje de Fragmentos")
+    windowSec.geometry("500x500")
+    windowSec.resizable(width= NO,height = NO)
+    windowSec.config(bg = "cadet blue")
+
+    btnOther = Button(windowSec, width = 15, bg="Skyblue4",fg="white",text="Generate Other", font = "Helvetica 16 bold italic", command = lambda : buttonOther())
+    btnOther.place(x = 50, y = 100)
+
+    btnGraph = Button(windowSec, width = 15, bg="Skyblue4",fg="white",text="View Graph", font = "Helvetica 16 bold italic", command = lambda : buttonAtcion())
+    btnGraph.place(x = 50, y = 200)
+
 
 def search():
     global dnaFile
@@ -83,4 +97,11 @@ def search():
     dnaFile = file
     direction = file.split("/")
     varDna.set("[Archivo Cargado]: " + direction[-1])
+
+def buttonAtcion():
+    #generate(eval(varSustitution.get()), eval(varInsertion.get()), eval(varDeletion.get()), eval(varChimeras.get()), eval(varInversion.get()), eval(varMinOverlap.get()), eval(varMaxOverlap.get()), eval(varQuantityFragments.get()), eval(varSizeFragments.get()), eval(varCoverageFragments.get()), dnaFile)
+    messagebox.showinfo("Éxito", "Proceso Completado")
+    ventanaSecundaria()
+
+
 
