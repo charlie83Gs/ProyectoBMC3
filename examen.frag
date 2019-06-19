@@ -1,0 +1,16 @@
+ro
+ooh
+orr
+ooohhh
+rre
+aalllooo
+odddn
+all
+uummma
+maaalllooo
+oood
+oodd
+ummm
+dddnnn
+nnnuuum
+mmaaa

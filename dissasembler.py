@@ -47,7 +47,7 @@ class Dissasembler(object):
         confFile.write(str(pFragCover))
         
         #write all config parameters of generated fragments
-        confFile
+        #confFile
         confFile.close()
         
     def saveFragments(self,name):

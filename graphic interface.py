@@ -4,7 +4,7 @@ from tkinter import messagebox
 from tkinter.filedialog import askopenfilename
 
 dnaFile = ""
-
+parameterList = []
 #Ventana principal
 window = Tk()
 window.title("Ensamblaje de Fragmentos")
@@ -72,7 +72,10 @@ lblCoverageFragments = Label(window, text = "Porcentaje de cobertura mínimo:" ,
 coverageFragments = Entry (window, textvariable = varCoverageFragments, bg= "#eef4f9", fg="#1e395b", width = 10).place (x = 650, y = 462)
 
 btnGenerate = Button(window, width = 15, bg="Skyblue4",fg="white",text="GENERATE", font = "Helvetica 16 bold italic", command = lambda : buttonAtcion())
-btnGenerate.place(x = 250, y = 520)
+btnGenerate.place(x = 100, y = 520)
+
+btnAssemble = Button(window, width = 15, bg="Skyblue4",fg="white",text="ASSEMBLE", font = "Helvetica 16 bold italic", command = lambda : assembleFragments())
+btnAssemble.place(x = 350, y = 520)
 
 adn = PhotoImage(file="adn.png")
 labelImage = Label(window, image = adn, bg = "cadet blue").place(x=650, y=500)
@@ -80,15 +83,47 @@ labelImage = Label(window, image = adn, bg = "cadet blue").place(x=650, y=500)
 def ventanaSecundaria():
     windowSec = Tk()
     windowSec.title("Ensamblaje de Fragmentos")
-    windowSec.geometry("500x500")
+    windowSec.geometry("600x500")
     windowSec.resizable(width= NO,height = NO)
     windowSec.config(bg = "cadet blue")
 
-    btnOther = Button(windowSec, width = 15, bg="Skyblue4",fg="white",text="Generate Other", font = "Helvetica 16 bold italic", command = lambda : buttonOther())
-    btnOther.place(x = 50, y = 100)
+    varAdn = StringVar()
+    lblAdn = Label(windowSec, text = "ADN:", bg = "cadet blue", fg = "white", font="Arial 12 bold").place(x=40, y=50)
+    entryAdn = Entry (windowSec,  bg = "#eef4f9", fg = "#1e395b", font = "Arial 10 italic", textvariable = varAdn, width = 30).place (x = 150, y = 52)
 
-    btnGraph = Button(windowSec, width = 15, bg="Skyblue4",fg="white",text="View Graph", font = "Helvetica 16 bold italic", command = lambda : buttonAtcion())
-    btnGraph.place(x = 50, y = 200)
+    btnSearchAdn = Button(windowSec, width=10, bg="Skyblue3", fg="white", text="Buscar", font="Helvetica 11 bold", command=lambda : searchADN())
+    btnSearchAdn.place(x=370, y=50)
+
+    varConf = StringVar()
+    lblConf = Label(windowSec, text = "Configuración:", bg = "cadet blue", fg = "white", font="Arial 12 bold").place(x=20, y=100)
+    entryConf = Entry (windowSec,  bg = "#eef4f9", fg = "#1e395b", font = "Arial 10 italic", textvariable = varConf, width = 30).place (x = 150, y = 102)
+
+    btnSearchConf = Button(windowSec, width=10, bg="Skyblue3", fg="white", text="Buscar", font="Helvetica 11 bold", command=lambda : loadConfigurartion())
+    btnSearchConf.place(x=370, y=100)
+
+    #----------------------------------
+
+    btnOther = Button(windowSec, width = 15, bg="Skyblue4",fg="white",text="Generate Other", font = "Helvetica 16 bold italic", command = lambda : buttonOther())
+    btnOther.place(x = 200, y = 200)
+
+    btnList = Button(windowSec, width = 15, bg="Skyblue4",fg="white",text="Generate Other", font = "Helvetica 16 bold italic", command = lambda : buttonList())
+    btnList.place(x = 200, y = 300)
+
+    btnGraph = Button(windowSec, width = 15, bg="Skyblue4",fg="white",text="View Graph", font = "Helvetica 16 bold italic")
+    btnGraph.place(x = 200, y = 400)
+
+    def searchADN():
+        global dnaFile
+        file = askopenfilename()
+        dnaFile = file
+        direction = file.split("/")
+        varAdn.set("[Archivo Cargado]: " + direction[-1])
+
+    def loadConfigurartion():
+        global parameterList
+        parameterList = loadConfig()
+        
+
 
 
 def search():
@@ -99,9 +134,22 @@ def search():
     varDna.set("[Archivo Cargado]: " + direction[-1])
 
 def buttonAtcion():
-    #generate(eval(varSustitution.get()), eval(varInsertion.get()), eval(varDeletion.get()), eval(varChimeras.get()), eval(varInversion.get()), eval(varMinOverlap.get()), eval(varMaxOverlap.get()), eval(varQuantityFragments.get()), eval(varSizeFragments.get()), eval(varCoverageFragments.get()), dnaFile)
+    generate(eval(varSustitution.get()), eval(varInsertion.get()), eval(varDeletion.get()), eval(varChimeras.get()), eval(varInversion.get()), eval(varMinOverlap.get()), eval(varMaxOverlap.get()), eval(varQuantityFragments.get()), eval(varSizeFragments.get()), eval(varCoverageFragments.get()), dnaFile)
+    messagebox.showinfo("Éxito", "Proceso Completado")
+    #ventanaSecundaria()
+
+def buttonOther():    
+    generate(parameterList[0], parameterList[1], parameterList[2], parameterList[3], parameterList[4], parameterList[5], parameterList[6], parameterList[7], parameterList[8], parameterList[9], dnaFile)
     messagebox.showinfo("Éxito", "Proceso Completado")
     ventanaSecundaria()
 
-
+def assembleFragments():
+    file = askopenfilename()
+    dirFile = file
+    frag = loadFragments(dirFile)
+    assembler = Assembler()
+    result = assembler.assemble(frag)
+    resFile = open("result.txt","w+")
+    resFile.write(result)
+    resFile.close()
 

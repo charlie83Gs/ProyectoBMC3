@@ -18,13 +18,14 @@ class Assembler(object):
     		graph.addNode(newNode)
 
     	#generate overlap graph
-    	graph.bruteForceConnect(2)
+    	graph.bruteForceConnect(1)
     	print("connected")
     	#graph.eliminateWeakPathsOptimized()
     	#print("simplified")
     	#res = graph.getGreedyOverlap()
     	res = graph.getGreedyIntuitiveOverlap();
     	print(len(res))
+    	return nodeArrayToString(res)
 
     	#print(res)
 
@@ -135,9 +136,6 @@ class Graph(object):
 		for node in self.nodes:
 			if(node in cache):
 				pn += [len(cache[node])]
-
-		print(pn)
-
 		return result
 
 	def nonRepeatingWeakPaths(self):
@@ -238,7 +236,7 @@ def nodeArrayToString(nArr):
 	for node in nArr[1:]:
 		overlap = overlapMax(res,node.data)
 		res +=  node.data[overlap:] 
-		print(node.data)
+		#print(node.data)
 	return res;
 
 #other overlap function
